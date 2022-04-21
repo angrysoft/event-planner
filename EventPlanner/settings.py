@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "auth",
-    "fontend",
+    "user_auth",
+    "frontend",
 ]
 
 MIDDLEWARE = [
@@ -50,6 +50,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'EventPlanner.backends.TokenBackend',
 ]
 
 ROOT_URLCONF = "EventPlanner.urls"
@@ -102,6 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "user_auth.User"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
