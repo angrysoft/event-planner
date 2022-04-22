@@ -53,11 +53,12 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'EventPlanner.backends.TokenBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "EventPlanner.backends.TokenBackend",
 ]
 
 ROOT_URLCONF = "EventPlanner.urls"
+LOGIN_URL = "/login"
 
 TEMPLATES = [
     {

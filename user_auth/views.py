@@ -9,6 +9,7 @@ import jwt
 
 from user_auth.models import Token
 from .forms import LoginForm
+from EventPlanner.decorators import auth_required
 
 
 class LoginView(View):
@@ -19,7 +20,7 @@ class LoginView(View):
         if login_form.is_valid():
             user = authenticate(
                 request,
-                username=login_form.cleaned_data.get("login"),
+                username=login_form.cleaned_data.get("username"),
                 password=login_form.cleaned_data.get("password"),
             )
             if user is not None:
@@ -28,13 +29,13 @@ class LoginView(View):
                 self._save_token(user, token)
                 login(request, user)
         else:
-            results["error"] = login_form.errors.as_json()
+            results["error"] = login_form.errors.as_text()
 
         return JsonResponse(results)
 
     def _generate_auth_jwt(self, user: AbstractBaseUser, token: str) -> str:
         token: str = jwt.encode(
-            {"user": user.username, "token": token},
+            {"username": user.username, "token": token},
             settings.JWTKEY,
             algorithm="HS256",
         )
@@ -56,7 +57,9 @@ def logoutView(request: HttpRequest):
     return JsonResponse({"result": {"status": "ok"}})
 
 
+@auth_required
 def userView(request: HttpRequest):
-    print(request.user)
-    user = authenticate(request)
+    print("userInfo", request.user)
+    # user = authenticate(request)
+    # print(user)
     return JsonResponse({"result": {"status": "ok"}})
