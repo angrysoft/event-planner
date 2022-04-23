@@ -27,7 +27,6 @@ class LoginView(View):
                 token = str(uuid.uuid4())
                 results["result"]["token"] = self._generate_auth_jwt(user, token)
                 self._save_token(user, token)
-                login(request, user)
         else:
             results["error"] = login_form.errors.as_text()
 
@@ -39,7 +38,6 @@ class LoginView(View):
             settings.JWTKEY,
             algorithm="HS256",
         )
-        print(type(token))
         return token
 
     def _save_token(self, user: AbstractBaseUser, token: str):
@@ -51,15 +49,11 @@ class LoginView(View):
 
 
 def logoutView(request: HttpRequest):
-    print(request.user)
-    logout(request)
-    print(request.user)
+
     return JsonResponse({"result": {"status": "ok"}})
 
 
 @auth_required
 def userView(request: HttpRequest):
-    print("userInfo", request.user)
-    # user = authenticate(request)
-    # print(user)
+    print("userInfo", request.user.is_authenticated)
     return JsonResponse({"result": {"status": "ok"}})
