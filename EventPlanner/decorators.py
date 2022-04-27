@@ -11,6 +11,8 @@ def auth_required(view_func):
             request.user = user
             return view_func(request, *args, **kwargs)
         else:
-            return JsonResponse({"results": {}, "errors": "Authenications faild"}, status=401)
+            return JsonResponse(
+                {"results": {}, "errors": "Authentications failed"}, status=401
+            )
 
     return _wrapped_view
